@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { WebhookSignatureValidator } from "mercadopago";
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
@@ -200,7 +201,7 @@ export async function POST(request: Request) {
       error: erroBusca,
     } = await supabaseAdmin
       .from("ingressos")
-      .select("id, pago_em")
+      .select("id, pago_em, qr_code")
       .eq("id", referencia)
       .maybeSingle();
 
@@ -243,11 +244,15 @@ export async function POST(request: Request) {
         pagamento?.id ?? null,
     };
 
-    if (statusBanco === "pago") {
-      atualizacao.pago_em =
-        ingresso.pago_em ??
-        new Date().toISOString();
-    }
+  if (statusBanco === "pago") {
+  atualizacao.pago_em =
+    ingresso.pago_em ??
+    new Date().toISOString();
+
+  atualizacao.qr_code =
+    ingresso.qr_code ??
+    randomUUID();
+}
 
     const { error: erroAtualizacao } =
       await supabaseAdmin
