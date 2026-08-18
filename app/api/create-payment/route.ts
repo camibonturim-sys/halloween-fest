@@ -88,17 +88,31 @@ export async function POST(request: Request) {
         .select("id")
         .single();
 
-    if (erroIngresso || !ingresso) {
-      console.error(
-        "Erro ao salvar pedido no Supabase:",
-        erroIngresso
-      );
+ if (erroIngresso || !ingresso) {
+  console.error(
+    "Erro ao salvar pedido no Supabase:",
+    erroIngresso
+  );
 
-      return NextResponse.json(
-        { erro: "Não foi possível registrar o pedido." },
-        { status: 500 }
-      );
-    }
+  if (
+    erroIngresso?.message?.includes(
+      "OPEN_GIN_10_ESGOTADO"
+    )
+  ) {
+    return NextResponse.json(
+      {
+        erro:
+          "Os 50 ingressos Open Gin de 10 já foram vendidos.",
+      },
+      { status: 409 }
+    );
+  }
+
+  return NextResponse.json(
+    { erro: "Não foi possível registrar o pedido." },
+    { status: 500 }
+  );
+}
 
     const referencia = ingresso.id;
 
