@@ -122,33 +122,6 @@ export default function PaginaIngresso() {
       }
     };
   }, [ingressoId]);
-async function compartilharIngresso() {
-  const url = window.location.href;
-
-  try {
-    if (navigator.share) {
-      await navigator.share({
-        title: "Meu ingresso - Halloween Fest",
-        text: "Meu ingresso para o Halloween Fest 🎃",
-        url,
-      });
-
-      return;
-    }
-
-    await navigator.clipboard.writeText(url);
-
-    alert(
-      "Link do ingresso copiado! Agora você pode enviar pelo WhatsApp."
-    );
-  } catch (erro) {
-    console.error(
-      "Erro ao compartilhar ingresso:",
-      erro
-    );
-  }
-}
-
 function salvarIngresso() {
   if (!ingresso?.qrCodeImagem) {
     return;
@@ -331,21 +304,13 @@ function salvarIngresso() {
               Não compartilhe este QR Code. Ele é único e será validado
               apenas uma vez na entrada.
             </div>
-<div className="mt-6 grid gap-3 sm:grid-cols-2">
+<div className="mt-6">
   <button
     type="button"
     onClick={salvarIngresso}
-    className="rounded-xl bg-orange-500 py-4 font-black uppercase text-black transition hover:bg-orange-400"
+    className="w-full rounded-xl bg-orange-500 py-4 font-black uppercase text-black transition hover:bg-orange-400"
   >
     Salvar ingresso
-  </button>
-
-  <button
-    type="button"
-    onClick={compartilharIngresso}
-    className="rounded-xl bg-purple-600 py-4 font-black uppercase text-white transition hover:bg-purple-500"
-  >
-    Compartilhar ingresso
   </button>
 </div>
             <Link
