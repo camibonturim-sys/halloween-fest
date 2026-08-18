@@ -28,24 +28,78 @@ export default function PagamentoPixPage() {
   const [carregando, setCarregando] = useState(true);
   const [copiado, setCopiado] = useState(false);
 
-  useEffect(() => {
-    const pagamentoSalvo =
-      sessionStorage.getItem("halloween_pix");
+useEffect(() => {
+  let intervalo:
+    | ReturnType<typeof setInterval>
+    | undefined;
 
-    if (pagamentoSalvo) {
+  const pagamentoSalvo =
+    sessionStorage.getItem("halloween_pix");
+
+  if (!pagamentoSalvo) {
+    setCarregando(false);
+    return;
+  }
+
+  try {
+    const pagamento = JSON.parse(
+      pagamentoSalvo
+    ) as DadosPix;
+
+    setDados(pagamento);
+    setCarregando(false);
+
+    async function verificarPagamento() {
       try {
-        const pagamento = JSON.parse(
-          pagamentoSalvo
-        ) as DadosPix;
+        const resposta = await fetch(
+          `/api/ingresso/${encodeURIComponent(
+            pagamento.pedidoId
+          )}`,
+          {
+            cache: "no-store",
+          }
+        );
 
-        setDados(pagamento);
-      } catch {
-        setDados(null);
+        if (!resposta.ok) {
+          return;
+        }
+
+        const ingresso = await resposta.json();
+
+        if (ingresso.status === "pago") {
+          sessionStorage.removeItem(
+            "halloween_pix"
+          );
+
+          router.replace(
+            `/ingresso/${pagamento.pedidoId}`
+          );
+        }
+      } catch (erro) {
+        console.error(
+          "Erro ao verificar pagamento:",
+          erro
+        );
       }
     }
 
+    verificarPagamento();
+
+    intervalo = setInterval(
+      verificarPagamento,
+      5000
+    );
+  } catch {
+    setDados(null);
     setCarregando(false);
-  }, []);
+  }
+
+  return () => {
+    if (intervalo) {
+      clearInterval(intervalo);
+    }
+  };
+}, [router]);
 
   async function copiarCodigoPix() {
     if (!dados?.qrCode) return;
