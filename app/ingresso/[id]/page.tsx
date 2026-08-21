@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { toPng } from "html-to-image";
 
 type DadosIngresso = {
   ingressoId: string;
@@ -47,6 +48,8 @@ function formatarData(data: string | null) {
 export default function PaginaIngresso() {
   const parametros = useParams<{ id: string }>();
   const ingressoId = parametros.id;
+
+  const ingressoRef = useRef<HTMLDivElement | null>(null);
 
   const [ingresso, setIngresso] =
     useState<DadosIngresso | null>(null);
@@ -122,21 +125,40 @@ export default function PaginaIngresso() {
       }
     };
   }, [ingressoId]);
-function salvarIngresso() {
-  if (!ingresso?.qrCodeImagem) {
+async function salvarIngresso() {
+  if (!ingressoRef.current || !ingresso) {
     return;
   }
 
-  const link = document.createElement("a");
+  try {
+    const imagem = await toPng(ingressoRef.current, {
+      cacheBust: true,
+      pixelRatio: 2,
+      backgroundColor: "#09090b",
+    });
 
-  link.href = ingresso.qrCodeImagem;
-  link.download = `ingresso-halloween-fest-${ingresso.ingressoId}.png`;
+    const link = document.createElement("a");
 
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+    link.download =
+      `ingresso-halloween-fest-${ingresso.ingressoId}.png`;
+
+    link.href = imagem;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (erro) {
+    console.error(
+      "Erro ao salvar ingresso:",
+      erro
+    );
+
+    alert(
+      "Não foi possível salvar o ingresso. Tente novamente."
+    );
+  }
 }
-  if (carregando) {
+if (carregando) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-black px-6 text-white">
         <div className="text-center">
@@ -239,7 +261,10 @@ function salvarIngresso() {
       <div className="absolute left-1/2 top-20 h-96 w-96 -translate-x-1/2 rounded-full bg-orange-500/10 blur-3xl" />
 
       <div className="relative z-10 mx-auto max-w-lg">
-        <div className="overflow-hidden rounded-3xl border border-orange-500/40 bg-zinc-950 shadow-[0_0_60px_rgba(249,115,22,0.15)]">
+        <div
+  ref={ingressoRef}
+  className="overflow-hidden rounded-3xl border border-orange-500/40 bg-zinc-950 shadow-[0_0_60px_rgba(249,115,22,0.15)]"
+>
           <div className="border-b border-orange-500/20 bg-gradient-to-r from-orange-500/20 to-purple-600/20 p-7 text-center">
             <p className="text-sm font-bold uppercase tracking-[0.35em] text-orange-400">
               Halloween Fest
