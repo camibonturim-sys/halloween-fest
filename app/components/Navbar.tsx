@@ -10,7 +10,12 @@ export default function Navbar() {
           <a href="#ingressos" className="hover:text-orange-500">
             Ingressos
           </a>
-
+<a
+  href="/encontrar-ingresso"
+  className="hover:text-orange-500"
+>
+  Meu ingresso
+</a>
           <a href="#comprar" className="hover:text-orange-500">
             Comprar
           </a>
