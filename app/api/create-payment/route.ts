@@ -151,10 +151,11 @@ export async function POST(request: Request) {
               last_name: sobrenome,
             },
 
-        transactions: {
+         transactions: {
           payments: [
             {
               amount: valorFormatado,
+              expiration_time: "PT30M",
               payment_method: {
                 id: "pix",
                 type: "bank_transfer",
@@ -167,8 +168,7 @@ export async function POST(request: Request) {
       requestOptions: {
         idempotencyKey: referencia,
       },
-    });
-
+});
     const pagamento =
       resultado.transactions?.payments?.[0];
 
