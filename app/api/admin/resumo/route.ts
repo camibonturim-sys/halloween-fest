@@ -45,14 +45,15 @@ export async function POST(request: Request) {
           head: true,
         }),
 
-      supabaseAdmin
-        .from("ingressos")
-        .select("*", {
-          count: "exact",
-          head: true,
-        })
-        .eq("status", "pendente"),
-
+     supabaseAdmin
+  .from("ingressos")
+  .select("*", {
+    count: "exact",
+    head: true,
+  })
+  .eq("status", "pendente")
+  .gt("expira_em", agoraIso),
+  
       supabaseAdmin
         .from("ingressos")
         .select("*", {
