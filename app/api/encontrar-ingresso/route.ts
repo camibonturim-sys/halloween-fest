@@ -86,9 +86,8 @@ export async function POST(request: Request) {
         valor: Number(ingresso.valor),
         status: ingresso.status,
         criadoEm: ingresso.created_at,
-        ingressoDisponivel:
-          ingresso.status === "pago" ||
-          ingresso.status === "utilizado",
+       ingressoDisponivel:
+  ingresso.status === "pago",
       }));
 
     /*

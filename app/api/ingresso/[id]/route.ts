@@ -56,7 +56,7 @@ export async function GET(
     }
 
 if (
-  !["pago", "utilizado"].includes(ingresso.status) ||
+  ingresso.status !== "pago" ||
   !ingresso.qr_code
 ) {
       return NextResponse.json({
