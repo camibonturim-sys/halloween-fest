@@ -55,10 +55,10 @@ export async function GET(
       );
     }
 
-    if (
-      ingresso.status !== "pago" ||
-      !ingresso.qr_code
-    ) {
+if (
+  !["pago", "utilizado"].includes(ingresso.status) ||
+  !ingresso.qr_code
+) {
       return NextResponse.json({
         ingressoId: ingresso.id,
         status: ingresso.status,
