@@ -21,6 +21,7 @@ type IngressoRecente = {
   valor: number;
   status: string;
   created_at: string;
+  expira_em: string | null;
   pago_em: string | null;
   checkin_em: string | null;
 };
@@ -59,6 +60,18 @@ export default function PaginaAdmin() {
       timeStyle: "short",
     }).format(new Date(data));
   }
+
+  function statusExibido(ingresso: IngressoRecente) {
+  if (
+    ingresso.status === "pendente" &&
+    ingresso.expira_em &&
+    new Date(ingresso.expira_em) <= new Date()
+  ) {
+    return "expirado";
+  }
+
+  return ingresso.status;
+}
 
   async function carregarPainel() {
     if (!pin.trim()) {
@@ -239,7 +252,7 @@ export default function PaginaAdmin() {
                         </p>
                       </div>
 
-                      <Status status={ingresso.status} />
+                      <Status status={statusExibido(ingresso)} />
                     </div>
 
                     <div className="mt-4 grid gap-2 text-sm text-zinc-400 sm:grid-cols-3">
@@ -318,7 +331,8 @@ function Status({
 }: {
   status: string;
 }) {
-  const estilos: Record<string, string> = {
+  const estilos: Record<string, string> = {expirado:
+  "border-zinc-500/30 bg-zinc-500/10 text-zinc-300",
     pendente:
       "border-yellow-500/30 bg-yellow-500/10 text-yellow-300",
 

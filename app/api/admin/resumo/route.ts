@@ -90,10 +90,10 @@ export async function POST(request: Request) {
   ),
 
       supabaseAdmin
-        .from("ingressos")
-        .select(
-          "id, nome, email, tipo, valor, status, created_at, pago_em, checkin_em"
-        )
+  .from("ingressos")
+  .select(
+    "id, nome, email, tipo, valor, status, created_at, expira_em, pago_em, checkin_em"
+  )
         .order("created_at", {
           ascending: false,
         })
