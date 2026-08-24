@@ -28,8 +28,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const [
-      total,
+      const agoraIso = new Date().toISOString();
+      const [
+        total,
       pendentes,
       pagos,
       utilizados,
@@ -76,14 +77,16 @@ export async function POST(request: Request) {
         })
         .eq("status", "cancelado"),
 
-      supabaseAdmin
-        .from("ingressos")
-        .select("*", {
-          count: "exact",
-          head: true,
-        })
-        .eq("tipo", "open_gin_10")
-        .neq("status", "cancelado"),
+   supabaseAdmin
+  .from("ingressos")
+  .select("*", {
+    count: "exact",
+    head: true,
+  })
+  .eq("tipo", "open_gin_10")
+  .or(
+    `status.in.(pago,utilizado),and(status.eq.pendente,expira_em.gt.${agoraIso})`
+  ),
 
       supabaseAdmin
         .from("ingressos")
