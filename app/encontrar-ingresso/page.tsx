@@ -222,8 +222,10 @@ export default function EncontrarIngressoPage() {
                   </Link>
                 ) : (
                   <div className="mt-5 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4 text-center text-sm text-yellow-300">
-                    O ingresso ficará disponível assim que o pagamento for confirmado.
-                  </div>
+  {ingresso.status === "utilizado"
+    ? "Este ingresso já foi utilizado no check-in."
+    : "O ingresso ficará disponível assim que o pagamento for confirmado."}
+</div>
                 )}
               </div>
             ))}
