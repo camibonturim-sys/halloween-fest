@@ -39,14 +39,14 @@ export default function Ingressos() {
             </div>
 
             <p className="mt-8 text-6xl font-black text-orange-500">
-              R$ 30
+              R$ 30,30
             </p>
 
             <p className="mt-5 leading-7 text-zinc-400">
               Entrada para a Halloween Fest. Após
               <strong className="text-white"> 10/10/2026 às 20h</strong>, o
               valor muda automaticamente para
-              <strong className="text-orange-400"> R$ 40</strong>.
+              <strong className="text-orange-400"> R$ 40,40</strong>.
             </p>
 
             <a
@@ -77,7 +77,7 @@ export default function Ingressos() {
             </div>
 
             <p className="mt-8 text-6xl font-black text-white">
-              R$ 55
+              R$ 55,55
             </p>
 
             <p className="mt-5 leading-7 text-zinc-300">

@@ -33,10 +33,10 @@ export default function FormularioCompra() {
     const agora = new Date();
     const mudanca = new Date("2026-10-10T20:00:00-03:00");
 
-    return agora >= mudanca ? 40 : 30;
+   return agora >= mudanca ? 40.40 : 30.30;
   }, []);
 
-  const valor = tipo === "open" ? 55 : precoNormal;
+  const valor = tipo === "open" ? 55.55 : precoNormal;
 
   async function enviarFormulario(
     evento: FormEvent<HTMLFormElement>
@@ -206,7 +206,8 @@ export default function FormularioCompra() {
               </option>
 
               <option value="open">
-                Open Gin de 10 — R$ 55,00
+                Open Gin de 10 — R$ 55,55
+                
               </option>
             </select>
           </div>

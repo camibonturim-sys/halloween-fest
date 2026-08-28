@@ -17,7 +17,7 @@ type DadosCompra = {
 
 function calcularValor(tipo: TipoIngresso) {
   if (tipo === "open") {
-    return 55;
+    return 55.55;
   }
 
   const agora = new Date();
@@ -25,7 +25,7 @@ function calcularValor(tipo: TipoIngresso) {
     "2026-10-10T20:00:00-03:00"
   );
 
-  return agora >= mudancaDePreco ? 40 : 30;
+  return agora >= mudancaDePreco ? 40.40 : 30.30;
 }
 
 export async function POST(request: Request) {
