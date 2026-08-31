@@ -31,11 +31,11 @@ function converterStatus(
   statusDetail?: string
 ): "pendente" | "pago" | "cancelado" {
   if (
-    status === "processed" &&
-    statusDetail !== "partially_refunded"
-  ) {
-    return "pago";
-  }
+  status === "processed" &&
+  statusDetail === "accredited"
+) {
+  return "pago";
+}
 
   const statusCancelados = [
     "canceled",
