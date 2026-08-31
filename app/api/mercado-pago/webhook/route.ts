@@ -119,7 +119,7 @@ export async function POST(request: Request) {
       WebhookSignatureValidator.validate({
         xSignature,
         xRequestId,
-        dataId,
+        dataId: dataId.toLowerCase(),
         secret: webhookSecret,
       });
     } catch (erroAssinatura) {
