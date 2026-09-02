@@ -1,11 +1,12 @@
 export default function Hero() {
   return (
-    <section
-      className="relative min-h-[85vh] bg-black bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: "url('/capa-halloween.png')",
-      }}
-    >
+    <section className="relative min-h-[85vh] overflow-hidden bg-black">
+      {/* Capa somente no celular */}
+      <div className="absolute inset-0 bg-[url('/capa-mobile.png')] bg-cover bg-center bg-no-repeat md:hidden" />
+
+      {/* Capa somente no computador */}
+      <div className="absolute inset-0 hidden bg-[url('/capa-halloween.png')] bg-cover bg-center bg-no-repeat md:block" />
+
       <div className="absolute inset-0 bg-black/10" />
 
       <div className="relative z-10 flex min-h-[85vh] items-end justify-center px-6 pb-10 md:justify-start md:px-24 md:pb-20">
@@ -19,4 +20,3 @@ export default function Hero() {
     </section>
   );
 }
-
