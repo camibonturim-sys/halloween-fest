@@ -15,7 +15,10 @@ export default function Ingressos() {
       restantes: 50,
       total: 50,
     });
-
+  const [precoNormal, setPrecoNormal] = useState("30,30");
+  const [mensagemPreco, setMensagemPreco] = useState(
+    "Após 08/10/2026 às 00h, o valor muda para R$ 35,35."
+  );
   async function carregarDisponibilidade() {
     try {
       const resposta = await fetch("/api/disponibilidade", {
@@ -34,7 +37,43 @@ export default function Ingressos() {
       // Mantém o último valor conhecido caso haja falha momentânea.
     }
   }
+  useEffect(() => {
+    function atualizarPreco() {
+      const agora = new Date();
 
+      const inicioSegundoLote = new Date(
+        "2026-10-08T00:00:00-03:00"
+      );
+
+      const inicioTerceiroLote = new Date(
+        "2026-10-10T20:00:00-03:00"
+      );
+
+      if (agora >= inicioTerceiroLote) {
+        setPrecoNormal("40,40");
+        setMensagemPreco("Lote final da festa.");
+      } else if (agora >= inicioSegundoLote) {
+        setPrecoNormal("35,35");
+        setMensagemPreco(
+          "Após 10/10/2026 às 20h, o valor muda para R$ 40,40."
+        );
+      } else {
+        setPrecoNormal("30,30");
+        setMensagemPreco(
+          "Após 08/10/2026 às 00h, o valor muda para R$ 35,35."
+        );
+      }
+    }
+
+    atualizarPreco();
+
+    const intervaloPreco = setInterval(
+      atualizarPreco,
+      60000
+    );
+
+    return () => clearInterval(intervaloPreco);
+  }, []);
   useEffect(() => {
     carregarDisponibilidade();
 
@@ -89,21 +128,14 @@ export default function Ingressos() {
             </div>
 
             <p className="mt-8 text-6xl font-black text-orange-500">
-              R$ 30,30
+              R$ {precoNormal}
             </p>
 
             <p className="mt-5 leading-7 text-zinc-400">
-              Entrada para a Halloween Fest. Após
-              <strong className="text-white">
-                {" "}
-                10/10/2026 às 20h
-              </strong>
-              , o valor muda automaticamente para
-              <strong className="text-orange-400">
-                {" "}
-                R$ 40,40
-              </strong>
-              .
+            Entrada para a Halloween Fest.{" "}
+<strong className="text-white">
+  {mensagemPreco}
+</strong>
             </p>
 
             <a

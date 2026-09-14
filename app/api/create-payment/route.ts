@@ -21,11 +21,24 @@ function calcularValor(tipo: TipoIngresso) {
   }
 
   const agora = new Date();
-  const mudancaDePreco = new Date(
+
+  const inicioSegundoLote = new Date(
+    "2026-10-08T00:00:00-03:00"
+  );
+
+  const inicioTerceiroLote = new Date(
     "2026-10-10T20:00:00-03:00"
   );
 
-  return agora >= mudancaDePreco ? 40.40 : 30.30;
+  if (agora >= inicioTerceiroLote) {
+    return 40.40;
+  }
+
+  if (agora >= inicioSegundoLote) {
+    return 35.35;
+  }
+
+  return 30.30;
 }
 
 export async function POST(request: Request) {
