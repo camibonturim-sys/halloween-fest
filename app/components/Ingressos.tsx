@@ -1,4 +1,54 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+type Disponibilidade = {
+  reservados: number;
+  restantes: number;
+  total: number;
+};
+
 export default function Ingressos() {
+  const [disponibilidade, setDisponibilidade] =
+    useState<Disponibilidade>({
+      reservados: 0,
+      restantes: 50,
+      total: 50,
+    });
+
+  async function carregarDisponibilidade() {
+    try {
+      const resposta = await fetch("/api/disponibilidade", {
+        cache: "no-store",
+      });
+
+      if (!resposta.ok) {
+        return;
+      }
+
+      const dados =
+        (await resposta.json()) as Disponibilidade;
+
+      setDisponibilidade(dados);
+    } catch {
+      // Mantém o último valor conhecido caso haja falha momentânea.
+    }
+  }
+
+  useEffect(() => {
+    carregarDisponibilidade();
+
+    const intervalo = setInterval(
+      carregarDisponibilidade,
+      10000
+    );
+
+    return () => clearInterval(intervalo);
+  }, []);
+
+  const percentualRestante =
+    (disponibilidade.restantes / disponibilidade.total) * 100;
+
   return (
     <section
       id="ingressos"
@@ -44,9 +94,16 @@ export default function Ingressos() {
 
             <p className="mt-5 leading-7 text-zinc-400">
               Entrada para a Halloween Fest. Após
-              <strong className="text-white"> 10/10/2026 às 20h</strong>, o
-              valor muda automaticamente para
-              <strong className="text-orange-400"> R$ 40,40</strong>.
+              <strong className="text-white">
+                {" "}
+                10/10/2026 às 20h
+              </strong>
+              , o valor muda automaticamente para
+              <strong className="text-orange-400">
+                {" "}
+                R$ 40,40
+              </strong>
+              .
             </p>
 
             <a
@@ -82,17 +139,32 @@ export default function Ingressos() {
 
             <p className="mt-5 leading-7 text-zinc-300">
               Entrada na festa com acesso ao Open Gin. Apenas
-              <strong className="text-white"> 50 ingressos disponíveis</strong>.
+              <strong className="text-white">
+                {" "}
+                50 ingressos disponíveis
+              </strong>
+              .
             </p>
 
             <div className="mt-6">
               <div className="mb-2 flex justify-between text-sm text-zinc-300">
                 <span>Disponibilidade</span>
-                <span>50 unidades</span>
+
+                <span>
+                  {disponibilidade.restantes}{" "}
+                  {disponibilidade.restantes === 1
+                    ? "unidade"
+                    : "unidades"}
+                </span>
               </div>
 
               <div className="h-2 overflow-hidden rounded-full bg-zinc-800">
-                <div className="h-full w-full rounded-full bg-gradient-to-r from-purple-500 to-orange-500" />
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-purple-500 to-orange-500 transition-all duration-500"
+                  style={{
+                    width: `${percentualRestante}%`,
+                  }}
+                />
               </div>
             </div>
 
@@ -100,7 +172,9 @@ export default function Ingressos() {
               href="#comprar"
               className="mt-8 block rounded-xl bg-white py-4 text-center font-black uppercase text-black transition group-hover:bg-orange-400"
             >
-              Comprar Open Gin
+              {disponibilidade.restantes > 0
+                ? "Comprar Open Gin"
+                : "Open Gin esgotado"}
             </a>
           </article>
         </div>
