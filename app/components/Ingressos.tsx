@@ -186,13 +186,16 @@ export default function Ingressos() {
   R$ {precoOpenGin}
 </p>
             <p className="mt-5 leading-7 text-zinc-300">
-              Entrada na festa com acesso ao Open Gin. Apenas
-              <strong className="text-white">
-                {" "}
-                50 ingressos disponíveis
-              </strong>
-              .
-            </p>
+  Entrada na festa com acesso ao Open Gin. Apenas
+  <strong className="text-white">
+    {" "}
+    50 ingressos disponíveis
+  </strong>
+  .{" "}
+  <strong className="text-white">
+    {mensagemOpenGin}
+  </strong>
+</p>
 
             <div className="mt-6">
               <div className="mb-2 flex justify-between text-sm text-zinc-300">
