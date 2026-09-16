@@ -17,7 +17,15 @@ type DadosCompra = {
 
 function calcularValor(tipo: TipoIngresso) {
   if (tipo === "open") {
-    return 55.55;
+    const agora = new Date();
+
+    const inicioSegundoLoteOpenGin = new Date(
+      "2026-10-03T00:00:00-03:00"
+    );
+
+    return agora >= inicioSegundoLoteOpenGin
+      ? 60.60
+      : 55.55;
   }
 
   const agora = new Date();
@@ -26,11 +34,11 @@ function calcularValor(tipo: TipoIngresso) {
     "2026-10-08T00:00:00-03:00"
   );
 
-  const inicioTerceiroLote = new Date(
+  const inicioLoteFinal = new Date(
     "2026-10-10T20:00:00-03:00"
   );
 
-  if (agora >= inicioTerceiroLote) {
+  if (agora >= inicioLoteFinal) {
     return 40.40;
   }
 
@@ -40,7 +48,6 @@ function calcularValor(tipo: TipoIngresso) {
 
   return 30.30;
 }
-
 export async function POST(request: Request) {
   try {
     const dados: DadosCompra = await request.json();

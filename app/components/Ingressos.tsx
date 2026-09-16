@@ -16,6 +16,7 @@ export default function Ingressos() {
       total: 50,
     });
   const [precoNormal, setPrecoNormal] = useState("30,30");
+  const [precoOpenGin, setPrecoOpenGin] = useState("55,55");
   const [mensagemPreco, setMensagemPreco] = useState(
     "Após 08/10/2026 às 00h, o valor muda para R$ 35,35."
   );
@@ -40,6 +41,15 @@ export default function Ingressos() {
   useEffect(() => {
     function atualizarPreco() {
       const agora = new Date();
+const inicioSegundoLoteOpenGin = new Date(
+  "2026-10-03T00:00:00-03:00"
+);
+
+if (agora >= inicioSegundoLoteOpenGin) {
+  setPrecoOpenGin("60,60");
+} else {
+  setPrecoOpenGin("55,55");
+}
 
       const inicioSegundoLote = new Date(
         "2026-10-08T00:00:00-03:00"
@@ -165,10 +175,9 @@ export default function Ingressos() {
               <span className="text-4xl">🍸</span>
             </div>
 
-            <p className="mt-8 text-6xl font-black text-white">
-              R$ 55,55
-            </p>
-
+          <p className="mt-8 text-6xl font-black text-white">
+  R$ {precoOpenGin}
+</p>
             <p className="mt-5 leading-7 text-zinc-300">
               Entrada na festa com acesso ao Open Gin. Apenas
               <strong className="text-white">
