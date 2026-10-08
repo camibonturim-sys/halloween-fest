@@ -31,16 +31,8 @@ function calcularValor(tipo: TipoIngresso) {
   const agora = new Date();
 
   const inicioSegundoLote = new Date(
-    "2026-10-08T00:00:00-03:00"
+    "2026-10-09T00:00:00-03:00"
   );
-
-  const inicioLoteFinal = new Date(
-    "2026-10-10T20:00:00-03:00"
-  );
-
-  if (agora >= inicioLoteFinal) {
-    return 40.40;
-  }
 
   if (agora >= inicioSegundoLote) {
     return 35.35;
