@@ -15,14 +15,18 @@ export default function Ingressos() {
       restantes: 50,
       total: 50,
     });
-  const [precoNormal, setPrecoNormal] = useState("30,30");
-  const [precoOpenGin, setPrecoOpenGin] = useState("55,55");
-  const [mensagemPreco, setMensagemPreco] = useState(
-    "Após 08/10/2026 às 00h, o valor muda para R$ 35,35."
-  );
-  const [mensagemOpenGin, setMensagemOpenGin] = useState(
+const [precoNormal, setPrecoNormal] = useState("30,30");
+
+const [precoOpenGin, setPrecoOpenGin] = useState("55,55");
+
+const [mensagemOpenGin, setMensagemOpenGin] = useState(
   "Após 03/10/2026 às 00h, o valor muda para R$ 60,60."
 );
+
+const [mensagemPreco, setMensagemPreco] = useState(
+  "Após 08/10/2026 às 00h, o valor muda para R$ 35,35."
+);
+
   async function carregarDisponibilidade() {
     try {
       const resposta = await fetch("/api/disponibilidade", {
@@ -59,27 +63,19 @@ export default function Ingressos() {
       );
     }
 
-    const inicioSegundoLote = new Date(
-      "2026-10-08T00:00:00-03:00"
-    );
-    const inicioTerceiroLote = new Date(
-  "2026-10-10T20:00:00-03:00"
+   const inicioSegundoLote = new Date(
+  "2026-10-09T00:00:00-03:00"
 );
 
-      if (agora >= inicioTerceiroLote) {
-        setPrecoNormal("40,40");
-        setMensagemPreco("Lote final da festa.");
-      } else if (agora >= inicioSegundoLote) {
-        setPrecoNormal("35,35");
-        setMensagemPreco(
-          "Após 10/10/2026 às 20h, o valor muda para R$ 40,40."
-        );
-      } else {
-        setPrecoNormal("30,30");
-        setMensagemPreco(
-          "Após 08/10/2026 às 00h, o valor muda para R$ 35,35."
-        );
-      }
+if (agora >= inicioSegundoLote) {
+  setPrecoNormal("35,35");
+  setMensagemPreco("Lote atual da festa.");
+} else {
+  setPrecoNormal("30,30");
+  setMensagemPreco(
+    "Após 09/10/2026 às 00h, o valor muda para R$ 35,35."
+  );
+}
     }
 
     atualizarPreco();
